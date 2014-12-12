@@ -18,8 +18,18 @@ class AT_Navigation {
 	# HOOKS
 	##
 	
+	/**
+	 * Add the meta tag Order
+	 * @author Niko Strijbol
+	 */
+	public function before_read_file_meta(&$headers)
+	{
+		$headers['order'] = 'Order';
+	}
+
 	public function get_pages(&$pages, &$current_page, &$prev_page, &$next_page)
 	{
+		global $config;
 		$navigation = array();
 		
 		foreach ($pages as $page)
@@ -32,6 +42,7 @@ class AT_Navigation {
 		}
 		
 		array_multisort($navigation);
+		
 		$this->navigation = $navigation;
 	}
 	
@@ -75,7 +86,9 @@ class AT_Navigation {
 		if (isset($navigation['_child']))
 		{
 			$_child = $navigation['_child'];
-			array_multisort($_child);
+			
+			//Sort the pages.
+			uasort($_child, array($this, "sort_pages"));
 			
 			foreach ($_child as $c)
 			{
@@ -135,11 +148,12 @@ class AT_Navigation {
 	{
 		$activeClass = (isset($this->settings['at_navigation']['activeClass'])) ? $this->settings['at_navigation']['activeClass'] : 'is-active';
 		if (count($split) == 1)
-		{			
+		{
 			$is_index = ($split[0] == '') ? true : false;
 			$ret = array(
 				'title'			=> $page['title'],
 				'url'			=> $page['url'],
+				'order'			=> $page['order'],
 				'class'			=> ($page['url'] == $current_page['url']) ? $activeClass : ''
 			);
 			
@@ -157,6 +171,26 @@ class AT_Navigation {
 			
 			$first = array_shift($split);
 			return array('_child' => array($first => $this->at_recursive($split, $page, $current_page)));
+		}
+	}
+	/**
+	 * Sort the pages according to the meta tag Order
+	 * @author Niko Strijbol
+	 */
+	private function sort_pages($a, $b)
+	{
+		if(empty($a['order']) && empty($b['order'])) {
+			return strcmp(basename($a['url']), basename($b['url']));
+		} else {
+			if($a['order'] == $b['order']) {
+				return 0;
+			} elseif (empty($a['order'])) {
+				return 1;
+			} elseif (empty($b['order'])) {
+				return -1;
+			} else {
+				return ($a['order'] < $b['order']) ? -1 : 1;
+			}
 		}
 	}
 }
