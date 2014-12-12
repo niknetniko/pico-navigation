@@ -24,7 +24,14 @@ class AT_Navigation {
 	 */
 	public function before_read_file_meta(&$headers)
 	{
-		$headers['order'] = 'Order';
+		$headers['order'] = "Order";
+	}
+
+	public function get_page_data(&$data, $page_meta) {
+		//Loads all the meta values, including meta values from headers into page values
+		foreach ($page_meta as $key => $value) {
+			$data[$key] = $value ;
+		}
 	}
 
 	public function get_pages(&$pages, &$current_page, &$prev_page, &$next_page)
@@ -149,7 +156,6 @@ class AT_Navigation {
 		$activeClass = (isset($this->settings['at_navigation']['activeClass'])) ? $this->settings['at_navigation']['activeClass'] : 'is-active';
 		if (count($split) == 1)
 		{
-			$is_index = ($split[0] == '') ? true : false;
 			$ret = array(
 				'title'			=> $page['title'],
 				'url'			=> $page['url'],
@@ -159,7 +165,6 @@ class AT_Navigation {
 			
 			$split0 = ($split[0] == '') ? '_index' : $split[0];
 			return array('_child' => array($split0 => $ret));
-			return $is_index ? $ret : array('_child' => array($split[0] => $ret));
 		}
 		else
 		{
