@@ -75,7 +75,7 @@ class AT_Navigation
 
         // default excludes
         $this->settings['at_navigation']['exclude'] = array_merge_recursive(
-            array('single' => array(), 'folder' => array()),
+            array('single' => array(), 'folder' => array(), 'regex' => array()),
             isset($this->settings['at_navigation']['exclude']) ? $this->settings['at_navigation']['exclude'] : array()
         );
     }
