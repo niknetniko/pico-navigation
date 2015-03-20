@@ -43,6 +43,13 @@ $config['at_navigation']['exclude']['single'] = array('a/site', 'another/site');
 $config['at_navigation']['exclude']['folder'] = array('a/folder', 'another/folder');
 ```
 
+### exclude via regular expression
+Add these line to your `config.php` to exclude all blog posts from menu:
+
+```
+$config['at_navigation']['exclude']['regex'] = array('/^blog\/[\w-]+\/*$/');
+```
+
 ## what it does
 
 This Plugin generates a better navigation with child navigations and editable configuration.
