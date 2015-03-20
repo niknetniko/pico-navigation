@@ -89,7 +89,6 @@ This plugin generates a better navigation with child menu's and editable configu
 
 So the output looks like:
 
-	```
     <ul id="at-navigation" class="at-navigation">
         <li><a href="…" title="…">…</a></li>
         <li>
@@ -99,7 +98,6 @@ So the output looks like:
             </ul>
         </li>
     </ul>
-    ```
 
 As you can see it will add an `.is-active` class to the `<a>` and `<li>` element of the **active page**.
 
@@ -114,5 +112,7 @@ You are free to share & remix this code only if you mention me as coder of this 
 ## Credits
 
 Original plugin: Ahmet Topal
+
 Sorting functions: Niko Strijbol
+
 Regex excluding: Oliver Lorenz
